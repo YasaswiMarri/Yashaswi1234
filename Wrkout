@@ -1,0 +1,112 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class WorkoutProgramService {
+  private baseUrl = 'http://localhost:5000/api/WorkoutProgram';
+
+  constructor(private http: HttpClient) {}
+
+  getWorkoutPrograms(category?: string, sortBy?: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}?category=${category}&sortBy=${sortBy}`);
+  }
+
+  addToFavorites(userId: number, programId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/favorites`, { userId, programId });
+  }
+
+  getRelatedPrograms(programId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/related?programId=${programId}`);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { Component, OnInit } from '@angular/core';
+import { WorkoutProgramService } from '../workout-program.service';
+
+@Component({
+  selector: 'app-workout-programs',
+  templateUrl: './workout-programs.component.html',
+  styleUrls: ['./workout-programs.component.css']
+})
+export class WorkoutProgramsComponent implements OnInit {
+  workoutPrograms: any[] = [];
+  category: string = '';
+  sortBy: string = '';
+
+  constructor(private workoutService: WorkoutProgramService) {}
+
+  ngOnInit() {
+    this.loadPrograms();
+  }
+
+  loadPrograms() {
+    this.workoutService.getWorkoutPrograms(this.category, this.sortBy).subscribe(data => {
+      this.workoutPrograms = data;
+    });
+  }
+
+  filterByCategory(category: string) {
+    this.category = category;
+    this.loadPrograms();
+  }
+
+  sortPrograms(sortBy: string) {
+    this.sortBy = sortBy;
+    this.loadPrograms();
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <button (click)="filterByCategory('Strength')" class="btn btn-primary">Strength</button>
+      <button (click)="filterByCategory('Cardio')" class="btn btn-primary">Cardio</button>
+      <button (click)="filterByCategory('Flexibility')" class="btn btn-primary">Flexibility</button>
+    </div>
+    <div>
+      <button (click)="sortPrograms('duration')" class="btn btn-secondary">Sort by Duration</button>
+      <button (click)="sortPrograms('difficulty')" class="btn btn-secondary">Sort by Difficulty</button>
+      <button (click)="sortPrograms('popularity')" class="btn btn-secondary">Sort by Popularity</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let program of workoutPrograms">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ program.title }}</h5>
+          <p class="card-text">{{ program.description }}</p>
+          <p><strong>Duration:</strong> {{ program.durationMinutes }} mins</p>
+          <p><strong>Equipment:</strong> {{ program.equipmentRequired }}</p>
+          <button class="btn btn-success" (click)="addToFavorites(program.programId)">Add to Favorites</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
