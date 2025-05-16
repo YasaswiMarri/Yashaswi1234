@@ -1,0 +1,58 @@
+[Route("api/[controller]")]
+[ApiController]
+public class WorkoutProgramController : ControllerBase
+{
+    private readonly TrackFitContext _context;
+
+    public WorkoutProgramController(TrackFitContext context)
+    {
+        _context = context;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetWorkoutPrograms(
+        string category = null, 
+        string sortBy = null)
+    {
+        var programs = _context.WorkoutPrograms.AsQueryable();
+
+        if (!string.IsNullOrEmpty(category))
+        {
+            programs = programs.Where(p => p.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
+        }
+
+        programs = sortBy switch
+        {
+            "duration" => programs.OrderBy(p => p.DurationMinutes),
+            "difficulty" => programs.OrderBy(p => p.Difficulty),
+            "popularity" => programs.OrderByDescending(p => p.PopularityScore),
+            _ => programs
+        };
+
+        return Ok(await programs.ToListAsync());
+    }
+
+    [HttpPost("favorites")]
+    public async Task<IActionResult> AddToFavorites(int userId, int programId)
+    {
+        var favorite = new Favorite { UserId = userId, ProgramId = programId };
+        _context.Favorites.Add(favorite);
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+
+    [HttpGet("related")]
+    public async Task<IActionResult> GetRelatedPrograms(int programId)
+    {
+        var category = await _context.WorkoutPrograms
+            .Where(p => p.ProgramId == programId)
+            .Select(p => p.Category)
+            .FirstOrDefaultAsync();
+
+        var relatedPrograms = await _context.WorkoutPrograms
+            .Where(p => p.Category == category && p.ProgramId != programId)
+            .ToListAsync();
+
+        return Ok(relatedPrograms);
+    }
+}
