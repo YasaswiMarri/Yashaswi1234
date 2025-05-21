@@ -1,0 +1,69 @@
+-- Create Database
+CREATE DATABASE TrackFitDb;
+GO
+
+USE TrackFitDb;
+GO
+
+-- Users Table
+CREATE TABLE Users (
+    UserId INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL
+);
+GO
+
+-- Categories Table
+CREATE TABLE Categories (
+    CategoryId INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL
+);
+GO
+
+-- WorkoutPrograms Table
+CREATE TABLE WorkoutPrograms (
+    WorkoutProgramId INT IDENTITY(1,1) PRIMARY KEY,
+    Title NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX),
+    ImageUrl NVARCHAR(255),
+    CategoryId INT NOT NULL,
+    FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId)
+);
+GO
+
+-- DietPlans Table
+CREATE TABLE DietPlans (
+    DietPlanId INT IDENTITY(1,1) PRIMARY KEY,
+    MealType NVARCHAR(50) NOT NULL, -- e.g., Breakfast, Lunch
+    Description NVARCHAR(MAX),
+    Date DATE NOT NULL,
+    UserId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES Users(UserId)
+);
+GO
+
+-- Reminders Table
+CREATE TABLE Reminders (
+    ReminderId INT IDENTITY(1,1) PRIMARY KEY,
+    Message NVARCHAR(255),
+    ReminderTime DATETIME NOT NULL,
+    UserId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES Users(UserId)
+);
+GO
+INSERT INTO Users (Name, Email) VALUES
+('Alice', 'alice@example.com'),
+('Bob', 'bob@example.com');
+
+INSERT INTO Categories (Name) VALUES
+('Cardio'), ('Strength'), ('Yoga');
+
+INSERT INTO WorkoutPrograms (Title, Description, ImageUrl, CategoryId) VALUES
+('Morning Cardio', 'Start your day with energy', 'cardio.jpg', 1),
+('Weight Lifting', 'Build strength and endurance', 'strength.jpg', 2);
+
+INSERT INTO DietPlans (MealType, Description, Date, UserId) VALUES
+('Breakfast', 'Oats with banana', '2025-05-21', 1);
+
+INSERT INTO Reminders (Message, ReminderTime, UserId) VALUES
+('Time for your workout!', '2025-05-21 07:00:00', 1);
