@@ -1,0 +1,46 @@
+using Microsoft.AspNetCore.Mvc;
+using Trackfit_DataAccessLayer.Models;
+
+[ApiController]
+[Route("api/[controller]")]
+public class CategoryController : ControllerBase
+{
+    private readonly ICategoryService _service;
+
+    public CategoryController(ICategoryService service)
+    {
+        _service = service;
+    }
+
+    [HttpGet]
+    public IActionResult Get() => Ok(_service.GetCategories());
+
+    [HttpGet("{id}")]
+    public IActionResult Get(int id)
+    {
+        var category = _service.GetCategory(id);
+        if (category == null) return NotFound();
+        return Ok(category);
+    }
+
+    [HttpPost]
+    public IActionResult Post([FromBody] Category category)
+    {
+        _service.CreateCategory(category);
+        return Ok();
+    }
+
+    [HttpPut]
+    public IActionResult Put([FromBody] Category category)
+    {
+        _service.UpdateCategory(category);
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        _service.DeleteCategory(id);
+        return Ok();
+    }
+}
