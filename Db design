@@ -1,0 +1,39 @@
+CREATE DATABASE IF NOT EXISTS trackfitdb;
+USE trackfitdb;
+
+CREATE TABLE Users (
+    UserId INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100),
+    Email VARCHAR(100)
+);
+
+CREATE TABLE Categories (
+    CategoryId INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100)
+);
+
+CREATE TABLE WorkoutPrograms (
+    WorkoutProgramId INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(100),
+    Description TEXT,
+    ImageUrl VARCHAR(255),
+    CategoryId INT,
+    FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId)
+);
+
+CREATE TABLE DietPlans (
+    DietPlanId INT AUTO_INCREMENT PRIMARY KEY,
+    MealType VARCHAR(50),
+    Description TEXT,
+    Date DATE,
+    UserId INT,
+    FOREIGN KEY (UserId) REFERENCES Users(UserId)
+);
+
+CREATE TABLE Reminders (
+    ReminderId INT AUTO_INCREMENT PRIMARY KEY,
+    Message VARCHAR(255),
+    ReminderTime DATETIME,
+    UserId INT,
+    FOREIGN KEY (UserId) REFERENCES Users(UserId)
+);
