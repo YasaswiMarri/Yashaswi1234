@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+ 
+</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> TrackFit - Your Fitness Journey</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <header class="header">
+    <a href="/" class="logo"> TrackFit</a>
+    <div class="header-icons">
+      <!-- Notifications container -->
+      <a href="/remainders" class="notification-container" title="Notifications">
+        <div class="notification-icon">
+          <i class="fas fa-bell"> </i>
+        </div>
+        <span class="notification-name"> Alerts</span>
+      </a>
+      <!-- Profile container -->
+      <div class="profile-container" title="Profile" (click)="goToProfile()">
+        <div class="profile-icon">
+          <img src="/assets/images/user-icon.png" alt="Profile" />
+        </div>
+        <span class="profile-name">{{ userName }}</span>
+      </div>
+
+    </div>
+  </header>
+
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1> Welcome to TrackFit, {{userName}}</h1>
+      <p> Your journey to a healthier lifestyle starts here. Discover workouts, track your progress, and stay motivated.</p>
+      <div class="row">
+        <div class="col">
+          <a href="/userexplore" class="btn-primary"> Explore Now</a>
+        </div>
+        <div class="col">
+          <a href="/nutrition-tracker" class="btn-primary"> View my Diet Plan</a>
+        </div>
+        <div class="col">
+          <a href="/suggestions" class="btn-primary">AI Powered Suggestions</a>
+        </div>
+        <div class="col">
+          <a href="/contact" class="btn-primary">Contact Admin</a>
+        </div>
+        <div class="col">
+          <a href="/admin-workouts" class="btn-primary">Workouts Management</a>
+        </div>
+      </div>
+    </div>
+   
+  </section>
+
+  <section class="about-trackfit">
+    <h2> About TrackFit</h2>
+    <ul>
+      <li> Personalized fitness tracking</li>
+      <li> Goal setting and progress monitoring</li>
+      <li> Expert-recommended workouts</li>
+      <li> Motivational tips and daily reminders</li>
+    </ul>
+  </section>
+
+  <!-- New Action Section with the two main buttons -->
+  <section class="action-section">
+    <h2>Start Your Journey</h2>
+    <p>Choose your path to a healthier lifestyle. Whether you want to focus on nutrition or build strength, we've got you covered.</p>
+
+    <div class="action-buttons">
+      <div class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-apple-alt"></i>
+        </div>
+        <h3>Nutrition & Diet Plan</h3>
+        <p>Make personalized meal plans and nutrition guidance tailored to your goals and dietary preferences.</p>
+        <a href="/nutrition-plan" class="btn-action nutrition">Make a Diet Plan</a>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-dumbbell"></i>
+        </div>
+        <h3>Workout Plan</h3>
+        <p>Make a custom workout routines designed for your fitness level and help you achieve your goals.</p>
+        <a href="/workout-plan" class="btn-action">Make a Workout Plan</a>
+      </div>
+    </div>
+
+    <!-- Moved and redesigned suggestions section -->
+    <div class="suggestions-section">
+      <h3>Need Help Choosing?</h3>
+      <p>Let our AI analyze your preferences and recommend the perfect combination for you.</p>
+      <a href="/suggestions" class="btn-suggestions">
+        <i class="fas fa-magic"></i> Get Smart Recommendations
+      </a>
+    </div>
+  </section>
+
+  <section class="fitness-facts">
+    <h2> Fitness Facts</h2>
+    <div class="facts-grid">
+      <div class="fact-card"> Exercise improves mental health and mood.</div>
+      <div class="fact-card"> 30 minutes a day can make a big difference.</div>
+      <div class="fact-card"> Staying hydrated boosts energy levels.</div>
+    </div>
+  </section>
+
+  <section class="fitness-facts">
+    <h2> Did You Know?</h2>
+    <div class="facts-grid">
+      <div class="fact-card">
+        <h3> 30 Minutes</h3>
+        <p> of moderate exercise daily can boost your mood and energy.</p>
+      </div>
+      <div class="fact-card">
+        <h3> Regular Workouts</h3>
+        <p> help improve your heart health and reduce risk of chronic diseases.</p>
+      </div>
+      <div class="fact-card">
+        <h3> Consistency</h3>
+        <p> is the key to long-term fitness success. Start small, stay committed!</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="workout-tips">
+    <h2> Pro Tips for Your Workouts</h2>
+    <ul>
+      <li> <span> 💧</span> Stay hydrated before, during, and after exercise.</li>
+      <li> <span> 🧘‍♂️</span> Warm up properly to avoid injuries.</li>
+      <li> <span> 🍎</span> Fuel your body with nutritious meals.</li>
+      <li> <span> 😴</span> Get enough rest for better recovery.</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <p> &copy; 2025 TrackFit | <a href="/contact"> Contact Us</a> | <a href="/faq">FAQ's</a> </p>
+  </footer>
+</body>
+</html>
