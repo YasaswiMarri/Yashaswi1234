@@ -1,46 +1,51 @@
-using Microsoft.AspNetCore.Mvc;
-using Trackfit_DataAccessLayer.Models;
+import { Component, OnInit } from '@angular/core';
+import { WorkoutsService } from '../Services/Workout-Services/workouts.service';
+import { Workout } from '../Interfaces/workouts';
 
-[ApiController]
-[Route("api/[controller]")]
-public class CategoryController : ControllerBase
-{
-    private readonly ICategoryService _service;
 
-    public CategoryController(ICategoryService service)
-    {
-        _service = service;
+@Component({
+  selector: 'app-user-explore',
+  templateUrl: './user-explore.component.html',
+  styleUrls: ['./user-explore.component.css']
+})
+export class UserExploreComponent {
+  searchQuery: string = '';
+  selectedCategory: string = 'All';
+  selectedWorkout: Workout | null = null;
+
+  categories: string[] = ['All', 'Cardio', 'Strength', 'Flexibility', 'Endurance'];
+  workouts: Workout[] = [];
+
+  constructor(private workoutsService: WorkoutsService) { }
+
+  ngOnInit(): void {
+    this.workoutsService.getAllWorkouts().subscribe(
+      data => {
+        this.workouts = data;
+      },
+      err => {
+        console.error('Error fetching workouts:', err);
+      }
+    );
+  }
+
+  get filteredWorkouts(): Workout[] {
+    return this.workouts.filter(workout =>
+      (this.selectedCategory === 'All' || workout.category === this.selectedCategory) &&
+      workout.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+  }
+
+  setCategory(category: string) {
+    this.selectedCategory = category;
+    this.selectedWorkout = null; // Close instructions on category change
+  }
+
+  onCardClick(workout: Workout) {
+    if (this.selectedWorkout === workout) {
+      this.selectedWorkout = null; // Collapse if same card clicked
+    } else {
+      this.selectedWorkout = workout; // Expand clicked card
     }
-
-    [HttpGet]
-    public IActionResult Get() => Ok(_service.GetCategories());
-
-    [HttpGet("{id}")]
-    public IActionResult Get(int id)
-    {
-        var category = _service.GetCategory(id);
-        if (category == null) return NotFound();
-        return Ok(category);
-    }
-
-    [HttpPost]
-    public IActionResult Post([FromBody] Category category)
-    {
-        _service.CreateCategory(category);
-        return Ok();
-    }
-
-    [HttpPut]
-    public IActionResult Put([FromBody] Category category)
-    {
-        _service.UpdateCategory(category);
-        return Ok();
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        _service.DeleteCategory(id);
-        return Ok();
-    }
-}
+  }
+ }
